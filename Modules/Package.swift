@@ -12,35 +12,51 @@ let package = Package(
         .library(
             name: "Modules",
             targets: [
-                "FeatureC-Implementation",
-                "FeatureC-Interface",
+                // MARK: Core
+                "CoreArchitecture",
+                "CoreUI",
 
-                "FeatureB-Implementation",
-                "FeatureB-Interface",
-
+                // MARK: Feature A
                 "FeatureA-Implementation",
                 "FeatureA-Interface",
 
+                // MARK: Feature B
+                "FeatureB-Implementation",
+                "FeatureB-Interface",
+
+                // MARK: Feature Keychain
+                "FeatureKeychain-Implementation",
+                "FeatureKeychain-Interface",
+
+                // MARK: Application
                 "Application"
             ]
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "1.2.8"))
+        .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "1.2.8")),
+        .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "19.0.0"),
     ],
     targets: [
+        // MARK: - Core Architecture
+        .target(
+            name: "CoreArchitecture",
+            dependencies: []
+        ),
+
+        // MARK: - Core Architecture
+        .target(
+            name: "CoreUI",
+            dependencies: []
+        ),
+
         // MARK: - Feature A
         // MARK: Implementation
         .target(
             name: "FeatureA-Implementation",
             dependencies: [
+                "CoreUI",
                 "FeatureA-Interface"
-            ]
-        ),
-        .testTarget(
-            name: "FeatureA-ImplementationTests",
-            dependencies: [
-                "FeatureA-Implementation"
             ]
         ),
 
@@ -48,7 +64,7 @@ let package = Package(
         .target(
             name: "FeatureA-Interface",
             dependencies: [
-                "FeatureB-Interface"
+                "CoreArchitecture"
             ]
         ),
 
@@ -57,58 +73,44 @@ let package = Package(
         .target(
             name: "FeatureB-Implementation",
             dependencies: [
-                "FeatureB-Interface"
-            ]
-        ),
-        .testTarget(
-            name: "FeatureB-ImplementationTests",
-            dependencies: [
-                "FeatureB-Implementation"
+                "FeatureB-Interface",
+                "FeatureKeychain-Interface"
             ]
         ),
 
         // MARK: Interface
         .target(
             name: "FeatureB-Interface",
-            dependencies: [
-                // TODO: Declare dependencies
-            ]
+            dependencies: []
         ),
 
-        // MARK: - Feature C
+        // MARK: - Feature Keychain
         // MARK: Implementation
         .target(
-            name: "FeatureC-Implementation",
+            name: "FeatureKeychain-Implementation",
             dependencies: [
-                "FeatureC-Interface"
-            ]
-        ),
-        .testTarget(
-            name: "FeatureC-ImplementationTests",
-            dependencies: [
-                "FeatureC-Implementation"
+                "FeatureKeychain-Interface",
+                .product(name: "KeychainSwift", package: "keychain-swift")
             ]
         ),
 
         // MARK: Interface
         .target(
-            name: "FeatureC-Interface",
-            dependencies: [
-                // TODO: Declare dependencies
-            ]
+            name: "FeatureKeychain-Interface",
+            dependencies: []
         ),
 
         // MARK: - Main Application
         .target(
             name: "Application",
             dependencies: [
-                "FeatureC-Implementation",
-                "FeatureC-Interface",
-                "FeatureB-Implementation",
-                "FeatureB-Interface",
+                "Factory",
                 "FeatureA-Implementation",
                 "FeatureA-Interface",
-                "Factory"
+                "FeatureB-Implementation",
+                "FeatureB-Interface",
+                "FeatureKeychain-Implementation",
+                "FeatureKeychain-Interface"
             ]
         ),
         .testTarget(

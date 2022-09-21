@@ -1,14 +1,16 @@
-import Factory
-import FeatureA_Interface
 import SwiftUI
 
-public struct FeatureAConcreteView: View {
-    public init() {}
+public struct FeatureAView: View {
+    let viewModel: FeatureAViewModel
+
+    public init(viewModel: FeatureAViewModel) {
+        self.viewModel = viewModel
+    }
 
     public var body: some View {
         List {
             NavigationLink {
-                // featureB?.makeView()
+                viewModel.featureFactoryB?.makeView()
             } label: {
                 Text("Feature B")
             }

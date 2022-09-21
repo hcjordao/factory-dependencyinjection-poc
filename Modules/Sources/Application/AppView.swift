@@ -1,14 +1,17 @@
-import Factory
 import SwiftUI
 
 public struct AppView: View {
-    @Injected(Container.featureA) private var featureA
+    private let viewModel: AppViewModel
+
+    public init(viewModel: AppViewModel) {
+        self.viewModel = viewModel
+    }
 
     public var body: some View {
         NavigationView {
             List {
                 NavigationLink {
-                    featureA.makeView()
+                    viewModel.featureFactory?.makeView()
                 } label: {
                     Text("Feature A")
                 }
