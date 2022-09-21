@@ -18,5 +18,6 @@ public struct AppView: View {
             }
             .navigationTitle("App View")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }

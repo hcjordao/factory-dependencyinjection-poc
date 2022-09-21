@@ -22,6 +22,7 @@ public class FeatureBViewModel: ObservableObject {
     }
 
     func update(token: String) {
+        debugPrint("Did update token to \(token)")
         keychainService?.save(object: currentText, for: .token)
     }
 
